@@ -1,16 +1,12 @@
-# disko
+# Disko
 
-A new Flutter project.
+Disko is a small minimalist **MacOS** application that allows you to see how much disk space individual application are using. It is broadly inspired by the *Disk Usage Analyzer* application on GNU/Linux.
 
-## Getting Started
+![screenshot of the app](./assets/screenshot.png)
 
-This project is a starting point for a Flutter application.
+## Install
 
-A few resources to get you started if this is your first Flutter project:
+You can install the `.app` file from the `/release` directory
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Have a great day,
+Yours, Robin
