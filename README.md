@@ -10,3 +10,5 @@ You can install the `.app` file from the `/release` directory
 
 Have a great day,
 Yours, Robin
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/robinnaumann)
