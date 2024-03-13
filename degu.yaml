@@ -6,8 +6,6 @@ name: Disko
 authors: 
   - ref: https://gist.githubusercontent.com/RobinNaumann/7d9d5b8902a697cda1f0ba2c5b7234c6/raw/46ebed8489de7e4458335ae434fee986d594504b/robin.degu.yaml
     role: developer
-platforms: 
-  - macOS
 tagline: Disk space visualizer for macOS
 about: >
     Disko is a simple disk space visualizer for macOS. 
@@ -21,8 +19,9 @@ screenshots:
   - https://raw.githubusercontent.com/RobinNaumann/disko/main/assets/screenshot.png
 releases: 
   - version: 0.3.2
+    notes: improved the theming inside the app
+    date: 2023-12-20
     downloads:
       - platform: macOS
-        date: 202-12-20
         url: https://github.com/RobinNaumann/disko/releases/latest/download/Disko.app.zip
-        notes: "improved the theming inside the app"
+        
