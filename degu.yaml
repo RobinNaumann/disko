@@ -21,7 +21,7 @@ screenshots:
   - https://raw.githubusercontent.com/RobinNaumann/disko/main/assets/screenshot.png
   - https://raw.githubusercontent.com/RobinNaumann/disko/main/assets/screenshot.png
 releases: 
-  - version: 3.2.0
+  - version: 0.3.2
     downloads:
       - platform: macOS
         date: 202-12-20
