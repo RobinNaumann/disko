@@ -19,7 +19,6 @@ source: https://github.com/RobinNaumann/disko
 donate: https://www.buymeacoffee.com/robinnaumann
 screenshots:
   - https://raw.githubusercontent.com/RobinNaumann/disko/main/assets/screenshot.png
-  - https://raw.githubusercontent.com/RobinNaumann/disko/main/assets/screenshot.png
 releases: 
   - version: 0.3.2
     downloads:
