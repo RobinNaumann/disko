@@ -15,12 +15,6 @@ void main() async {
   await _configureMacosWindowUtils();
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    AppInfoService.init(await PackageInfo.fromPlatform());
-  } catch (e) {
-    //
-  }
-
   runApp(const MyApp());
 }
 
