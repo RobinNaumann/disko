@@ -4,7 +4,7 @@
 
 name: Disko
 authors: 
-  - ref: ./robbb/robin.yaml#profile
+  - ref: https://gist.githubusercontent.com/RobinNaumann/7d9d5b8902a697cda1f0ba2c5b7234c6/raw/46ebed8489de7e4458335ae434fee986d594504b/robin.degu.yaml
     role: developer
 platforms: 
   - macOS
