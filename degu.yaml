@@ -21,7 +21,9 @@ screenshots:
   - https://raw.githubusercontent.com/RobinNaumann/disko/main/assets/screenshot.png
   - https://raw.githubusercontent.com/RobinNaumann/disko/main/assets/screenshot.png
 releases: 
-  - version: 1.8.0
+  - version: 3.2.0
     downloads:
       - platform: macOS
+        date: 202-12-20
         url: https://github.com/RobinNaumann/disko/releases/latest/download/Disko.app.zip
+        notes: "improved the theming inside the app"
