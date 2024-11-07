@@ -3,25 +3,30 @@
 # for a usecase, check out apps.robbb.in
 
 name: Disko
-authors: 
+authors:
   - ref: https://gist.githubusercontent.com/RobinNaumann/7d9d5b8902a697cda1f0ba2c5b7234c6/raw/46ebed8489de7e4458335ae434fee986d594504b/robin.degu.yaml
     role: developer
 tagline: Disk space visualizer for macOS
 about: >
-    Disko is a simple disk space visualizer for macOS. 
-    It shows the disk usage of your files in a sunburst diagram.
-     You can navigate the diagram to find large files and delete them to free up space. 
-     Disko is open source and free to use. 
+  Disko is a simple disk space visualizer for macOS. 
+  It shows the disk usage of your files in a sunburst diagram.
+   You can navigate the diagram to find large files and delete them to free up space. 
+   Disko is open source and free to use.
 icon: https://raw.githubusercontent.com/RobinNaumann/disko/main/assets/icon.png
 source: https://github.com/RobinNaumann/disko
 donate: https://www.buymeacoffee.com/robinnaumann
 screenshots:
   - https://raw.githubusercontent.com/RobinNaumann/disko/main/assets/screenshot.png
-releases: 
+releases:
+  - version: 0.3.3
+    notes: switched to apple notarization
+    date: 2024-11-07
+    downloads:
+      - platform: macOS
+        url: https://github.com/RobinNaumann/disko/releases/latest/download/Disko.app.zip
   - version: 0.3.2
     notes: improved the theming inside the app
     date: 2023-12-20
     downloads:
       - platform: macOS
         url: https://github.com/RobinNaumann/disko/releases/latest/download/Disko.app.zip
-        
