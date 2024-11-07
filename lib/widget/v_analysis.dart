@@ -1,14 +1,14 @@
-import 'package:elbe/elbe.dart';
 import 'package:disko/bit/b_dirpath.dart';
 import 'package:disko/bit/b_view_options.dart';
 import 'package:disko/model/m_filenode.dart';
 import 'package:disko/widget/folder_info/v_node_info.dart';
 import 'package:disko/widget/graph/v_size_graph.dart';
-import 'package:disko/widget/v_about.dart';
+import 'package:elbe/elbe.dart';
 import 'package:local_hero/local_hero.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 import '../bit/b_filetree.dart';
+import 'vp_analysis.dart';
 
 extension CRect on Rect {
   bool get isNegative => left < 0 || top < 0 || width < 0 || height < 0;
@@ -66,7 +66,12 @@ class AnalysisView extends StatelessWidget {
                               onTap: () => optionsBit.emit(options.copyWith(
                                   showNames: !options.showNames))),
                           const MacosPulldownMenuDivider(),
-                          const AboutEntry()
+                          MacosPulldownMenuItem(
+                              title: Text("send feedback"),
+                              onTap: () async {
+                                await Navigator.of(context).maybePop();
+                                AnalysisPage.showFeedback(context);
+                              }),
                         ],
                       ),
                     ],
@@ -124,25 +129,4 @@ class AnalysisView extends StatelessWidget {
                                   ].spaced(amount: 2),
                                 ))))
                   ])));
-}
-
-class AboutEntry extends MacosPulldownMenuItem {
-  const AboutEntry({Key? key})
-      : super(key: key, title: const SizedBox.shrink());
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        await Navigator.maybePop(context);
-        // ignore: use_build_context_synchronously
-        AboutAppDialog.show(context);
-      },
-      child: const Row(
-        children: [
-          Expanded(child: Text("about")),
-        ],
-      ),
-    );
-  }
 }

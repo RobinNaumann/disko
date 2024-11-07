@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:disko/model/m_filenode.dart';
 import 'package:elbe/bit/bit/bit.dart';
 import 'package:elbe/elbe.dart';
 import 'package:path/path.dart' as p;
-import 'package:disko/model/m_filenode.dart';
 
 class FilesService {
   static const FilesService i = FilesService._();

@@ -1,7 +1,8 @@
-import 'package:elbe/elbe.dart';
-import 'package:disko/service/s_appinfo.dart';
 import 'package:disko/widget/vp_analysis.dart';
+import 'package:elbe/bit/bit/bit.dart';
+import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:moewe/moewe.dart';
 
 /// This method initializes macos_window_utils and styles the window.
 Future<void> _configureMacosWindowUtils() async {
@@ -14,6 +15,19 @@ Future<void> _configureMacosWindowUtils() async {
 void main() async {
   await _configureMacosWindowUtils();
   WidgetsFlutterBinding.ensureInitialized();
+  final packageInfo =
+      await maybeOr(() async => await PackageInfo.fromPlatform(), null);
+
+  // setup Moewe for crash logging
+  await Moewe(
+          host: "moewe.robbb.in",
+          project: "0dca2d06267e48e0",
+          app: "3b72569ec046bd54",
+          appVersion: packageInfo?.version,
+          buildNumber: int.tryParse(packageInfo?.buildNumber ?? ""))
+      .init();
+
+  moewe.events.appOpen();
 
   runApp(const MyApp());
 }
