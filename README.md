@@ -6,7 +6,7 @@ Disko is a minimalist **MacOS** application that allows you to see how much disk
 
 ## Install
 
-You can install the `.app` file from the `/release` directory
+You can install the `.app` file from the `Releases` sidebar
 
 Have a great day,
 Yours, Robin
