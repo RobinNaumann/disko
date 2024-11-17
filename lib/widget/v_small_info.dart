@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:disko/util/byte_format.dart';
+import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 import '../model/m_filenode.dart';
@@ -17,9 +17,18 @@ class SmallDialog extends StatelessWidget {
   Widget _entry(FileNode node) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(children: [
-        Text(node.name),
-        const Spacer(),
-        Text(
+        Icon(node.isFile ? ApfelIcons.doc : ApfelIcons.folder),
+        Expanded(
+            child: Padded.only(
+                left: .7,
+                right: 1,
+                child: WText(
+                  node.name,
+                  maxLines: 1,
+                  softWrap: false,
+                  overflow: TextOverflow.fade,
+                ))),
+        WText(
           node.size.bytes,
           style: const TextStyle(fontWeight: FontWeight.bold),
         )
@@ -29,7 +38,7 @@ class SmallDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return MacosSheet(
       child: ListView(padding: const EdgeInsets.all(20), children: [
-        Text("Small Folders", style: macTheme(context).typography.title2.bold),
+        WText("Small Entries", style: macTheme(context).typography.title2.bold),
         const SizedBox(height: 10),
         ...nodes.map(_entry).toList()
       ]),

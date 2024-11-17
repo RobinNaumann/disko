@@ -2,9 +2,9 @@ import 'package:disko/bit/b_dirpath.dart';
 import 'package:disko/bit/b_view_options.dart';
 import 'package:disko/model/m_filenode.dart';
 import 'package:disko/widget/folder_info/v_node_info.dart';
+import 'package:disko/widget/graph/v_limited_hero.dart';
 import 'package:disko/widget/graph/v_size_graph.dart';
 import 'package:elbe/elbe.dart';
-import 'package:local_hero/local_hero.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 import '../bit/b_filetree.dart';
@@ -31,12 +31,13 @@ class AnalysisView extends StatelessWidget {
                   toolBar: ToolBar(
                     title: const WText('Disko'),
                     actions: [
-                      ToolBarIconButton(
-                        icon: const WIcon(ApfelIcons.back),
-                        label: 'back',
-                        showLabel: false,
-                        onPressed: () => fileBit.back(),
-                      ),
+                      if (fileBit.backIsPossible())
+                        ToolBarIconButton(
+                          icon: const WIcon(ApfelIcons.back),
+                          label: 'back',
+                          showLabel: false,
+                          onPressed: () => fileBit.back(),
+                        ),
                       ToolBarIconButton(
                         icon: const WIcon(ApfelIcons.refresh),
                         label: 'reload',
@@ -79,54 +80,53 @@ class AnalysisView extends StatelessWidget {
                   children: [
                     ContentArea(
                         builder: (c, sc) => FileTreeBit.builder(
-                            onData: (bit, state) => Padded.all(
-                                    child: Column(
+                            onData: (bit, state) => Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Expanded(
-                                        child: LocalHeroScope(
-                                            createRectTween: (a, b) =>
-                                                RectTween(begin: a, end: b),
-                                            duration: const Duration(
-                                                milliseconds: 200),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(3),
-                                              child: SingleChildScrollView(
-                                                  reverse: true,
-                                                  controller: sc,
-                                                  child: SizeGraphView(
-                                                    options: GraphOptions(
-                                                        /*
-                                                            macTheme(context)
-                                                                .canvasColor,*/
-                                                        color: options.color,
-                                                        showFiles:
-                                                            options.showFiles,
-                                                        itemHeight:
-                                                            options.itemHeight,
-                                                        showNames:
-                                                            options.showNames,
-                                                        onTap: (node) =>
-                                                            optionsBit.emit(
-                                                                options.copyWith(
-                                                                    selected: () =>
-                                                                        node)),
-                                                        onDoubleTap: (node) =>
-                                                            fileBit
-                                                                .emitExistingPath(
-                                                                    node.path)),
-                                                    node: fileTree,
-                                                    selected:
-                                                        options.selected?.path,
-                                                  )),
-                                            ))),
+                                        child: ClipRect(
+                                      child: LocalLimitedHeroScope(
+                                        child: SingleChildScrollView(
+                                            padding:
+                                                EdgeInsets.all(context.rem(1)),
+                                            reverse: true,
+                                            clipBehavior: Clip.none,
+                                            controller: sc,
+                                            child: SizeGraphView(
+                                              options: GraphOptions(
+                                                  /*
+                                                                macTheme(context)
+                                                                    .canvasColor,*/
+                                                  color: options.color,
+                                                  showFiles: options.showFiles,
+                                                  itemHeight:
+                                                      options.itemHeight,
+                                                  showNames: options.showNames,
+                                                  onTap: (node) => optionsBit
+                                                      .emit(options.copyWith(
+                                                          selected: () =>
+                                                              node)),
+                                                  onDoubleTap: (node) {
+                                                    optionsBit.emit(
+                                                        options.copyWith(
+                                                            selected: () =>
+                                                                node));
+                                                    fileBit.emitExistingPath(
+                                                        node.path);
+                                                  }),
+                                              node: fileTree,
+                                              selected: options.selected?.path,
+                                            )),
+                                      ),
+                                    )),
                                     Padded.only(
-                                        bottom: 0.5,
+                                        left: 1,
+                                        right: 1,
+                                        bottom: 1.5,
                                         child: NodeInfoView(
                                             node:
                                                 options.selected ?? fileTree)),
-                                  ].spaced(amount: 2),
-                                ))))
+                                  ].spaced(amount: 1),
+                                )))
                   ])));
 }

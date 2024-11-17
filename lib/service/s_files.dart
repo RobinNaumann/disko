@@ -17,10 +17,10 @@ class FilesService {
         final ent = dir ? Directory(path) : File(path);
         final size = (await ent.stat()).size;
         final name = p.basename(ent.path);
-        List<FileNode>? children;
+        List<RawFileNode>? children;
 
         if (dir) {
-          children = <FileNode>[];
+          children = <RawFileNode>[];
           try {
             await for (var e in (ent as Directory).list(followLinks: false)) {
               if (e is! File && e is! Directory) continue;
@@ -31,6 +31,7 @@ class FilesService {
             //
           }
         }
-        return FileNode(name: name, path: path, size: size, children: children);
+        return FileNode.fromRaw(RawFileNode(
+            name: name, path: path, size: size, children: children));
       });
 }

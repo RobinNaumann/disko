@@ -1,5 +1,4 @@
 import 'package:disko/widget/vp_analysis.dart';
-import 'package:elbe/bit/bit/bit.dart';
 import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:moewe/moewe.dart';
@@ -14,18 +13,18 @@ Future<void> _configureMacosWindowUtils() async {
 
 void main() async {
   await _configureMacosWindowUtils();
+  await AppInfoService.init();
   WidgetsFlutterBinding.ensureInitialized();
-  final packageInfo =
-      await maybeOr(() async => await PackageInfo.fromPlatform(), null);
 
   // setup Moewe for crash logging
   await Moewe(
-          host: "moewe.robbb.in",
-          project: "0dca2d06267e48e0",
-          app: "3b72569ec046bd54",
-          appVersion: packageInfo?.version,
-          buildNumber: int.tryParse(packageInfo?.buildNumber ?? ""))
-      .init();
+    host: "moewe.robbb.in",
+    project: "0dca2d06267e48e0",
+    app: "3b72569ec046bd54",
+    appVersion: AppInfoService.i.version,
+    buildNumber: int.tryParse(AppInfoService.i.buildNr),
+    storeManaged: true,
+  ).init();
 
   moewe.events.appOpen();
 
@@ -45,7 +44,7 @@ class MyApp extends StatelessWidget {
             geometry: GeometryThemeData.preset()),
         child: const MacosApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'Disko',
           home: BaseView(),
         ));
   }

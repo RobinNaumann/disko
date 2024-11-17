@@ -1,8 +1,10 @@
-import 'package:disko/util/byte_format.dart';
-import 'package:elbe/elbe.dart';
+import 'dart:math';
+
 import 'package:disko/model/m_filenode.dart';
+import 'package:disko/util/byte_format.dart';
 import 'package:disko/util/text_style.dart';
-import 'package:local_hero/local_hero.dart';
+import 'package:disko/widget/graph/v_limited_hero.dart';
+import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 import '../v_small_info.dart';
@@ -31,9 +33,7 @@ class GraphOptions {
 }
 
 class SizeGraphView extends StatelessWidget {
-  final double hueFactor;
   final GraphOptions options;
-  final Color? color;
   final FileNode node;
   final String? selected;
 
@@ -41,16 +41,7 @@ class SizeGraphView extends StatelessWidget {
       {super.key,
       required this.node,
       this.selected,
-      this.options = const GraphOptions()})
-      : color = null,
-        hueFactor = 330 / node.totalSize;
-
-  const SizeGraphView._(
-      {required this.node,
-      required this.hueFactor,
-      required this.selected,
-      required this.options,
-      required this.color});
+      this.options = const GraphOptions()});
 
   List<Widget> _makeChildren(BuildContext c, double factor) {
     final folders = <Widget>[];
@@ -59,26 +50,25 @@ class SizeGraphView extends StatelessWidget {
 
     final baseColor = MacosTheme.of(c).canvasColor.withOpacity(1);
 
-    //_textColor(c);
-
-    HSLColor childColor =
-        HSLColor.fromColor((color ?? options.color).inter(0.1, baseColor));
-
     for (final child in node.sortedChildren ?? <FileNode>[]) {
-      final size = child.totalSize;
-      final width = size * factor;
+      final width = child.totalSize * factor;
+
       if (child.isFile) {
-        if (width > 10 && options.showFiles) {
+        if (!options.showFiles) continue;
+        if (width > 10) {
+          // add a file
           files.add(GestureDetector(
               onDoubleTap: () => options.onDoubleTap?.call(child),
               onTap: () => options.onTap?.call(child),
               child: _NodeItem(
                   showName: options.showNames && width > 50,
                   selected: selected == child.path,
-                  color: baseColor.facM(-2),
+                  color: HSLColor.fromColor(baseColor.facM(-2)),
                   height: options.itemHeight,
                   width: width,
                   node: child)));
+        } else {
+          tooSmalls.add(child);
         }
         continue;
       }
@@ -89,30 +79,26 @@ class SizeGraphView extends StatelessWidget {
 
       folders.add(SizedBox(
           width: width,
-          child: SizeGraphView._(
+          child: SizeGraphView(
             node: child,
             options: options,
-            color: childColor.toColor(),
-            hueFactor: hueFactor,
             selected: selected,
           )));
-      childColor =
-          childColor.withHue((childColor.hue + hueFactor * size) % 360);
     }
 
     final smallsWidth = tooSmalls.fold(0, (p, e) => p + e.totalSize) * factor;
-    if (smallsWidth > 10) {
-      folders.add(LocalHero(
-        key: Key("${node.path}#smalls"),
+    if (smallsWidth > 5) {
+      files.add(LocalLimitedHero(
         tag: "${node.path}#smalls",
         child: GestureDetector(
           onTap: () => SmallDialog.show(c, tooSmalls),
           child: Container(
-              width: smallsWidth - _margin,
+              margin: EdgeInsets.only(bottom: 1),
+              width: max(1, smallsWidth - _margin),
               height: options.itemHeight,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(_borderRadius),
-                  color: baseColor.facM(0.16))),
+                  color: baseColor.facM(0.3))),
         ),
       ));
     }
@@ -121,34 +107,39 @@ class SizeGraphView extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-      builder: (_, c) => Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children:
-                      _makeChildren(context, c.maxWidth / node.totalSize)),
-              GestureDetector(
-                onDoubleTap: () => options.onDoubleTap?.call(node),
-                onTap: () => options.onTap?.call(node),
-                child: _NodeItem(
-                    height: options.itemHeight,
-                    selected: selected == node.path,
-                    color: color ?? options.color,
-                    showName: options.showNames && c.maxWidth > 50,
-                    node: node),
-              ),
-            ],
-          ));
+  Widget build(BuildContext context) {
+    //final baseColor = MacosTheme.of(c).canvasColor.withOpacity(1);
+    final hslC = HSLColor.fromColor(options.color); //.inter(0.1, baseColor));
+
+    return LayoutBuilder(
+        builder: (_, c) => Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children:
+                        _makeChildren(context, c.maxWidth / node.totalSize)),
+                GestureDetector(
+                  onDoubleTap: () => options.onDoubleTap?.call(node),
+                  onTap: () => options.onTap?.call(node),
+                  child: _NodeItem(
+                      height: options.itemHeight,
+                      selected: selected == node.path,
+                      color: hslC.withHue((hslC.hue + node.offset * 300) % 360),
+                      showName: options.showNames && c.maxWidth > 50,
+                      node: node),
+                ),
+              ],
+            ));
+  }
 }
 
 class _NodeItem extends StatelessWidget {
   final double height;
   final bool selected;
-  final Color color;
+  final HSLColor color;
   final bool showName;
   final FileNode node;
   final double? width;
@@ -160,19 +151,24 @@ class _NodeItem extends StatelessWidget {
       required this.height,
       this.width});
 
+  bool _isLight(HSLColor c) =>
+      c.lightness > .7 || (c.lightness > .5 && c.hue > 40 && c.hue < 100);
+
   @override
   Widget build(BuildContext context) {
-    final textColor = _textColor(context);
+    final textColor = _isLight(color) ? Colors.black : Colors.white;
+
+    //_textColor(context);
     return Padding(
       padding: const EdgeInsets.only(right: _margin, bottom: _margin / 2),
-      child: LocalHero(
-          key: Key(node.path),
+      child: LocalLimitedHero(
           tag: node.path,
           child: MacosTooltip(
-              message: "${node.name}\n${node.totalSize.bytes}",
+              message:
+                  "${node.name} (${node.totalSize.bytes})\ndouble-click to focus",
               child: node.isFile
                   ? Material(
-                      color: color,
+                      color: color.toColor(),
                       shape: BeveledRectangleBorder(
                         side: selected
                             ? BorderSide(
@@ -205,7 +201,7 @@ class _NodeItem extends StatelessWidget {
                                 )
                               : null,
                           borderRadius: BorderRadius.circular(_borderRadius),
-                          color: color),
+                          color: color.toColor()),
                       padding: const EdgeInsets.all(4),
                       height: height,
                       child: !showName
@@ -214,6 +210,7 @@ class _NodeItem extends StatelessWidget {
                               child: WText(
                                 node.name,
                                 textAlign: TextAlign.center,
+                                style: TextStyle(color: textColor),
                                 maxLines: 1,
                                 softWrap: false,
                                 overflow: TextOverflow.fade,

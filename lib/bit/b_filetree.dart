@@ -1,6 +1,6 @@
-import 'package:elbe/elbe.dart';
 import 'package:disko/model/m_filenode.dart';
 import 'package:disko/service/s_files.dart';
+import 'package:elbe/elbe.dart';
 
 class FileTreeBit extends MapMsgBitControl<FileNode> {
   static const builder = MapMsgBitBuilder<FileNode, FileTreeBit>.make;

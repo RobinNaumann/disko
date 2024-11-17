@@ -1,6 +1,6 @@
+import 'package:disko/model/m_filenode.dart';
 import 'package:elbe/bit/bit/bit.dart';
 import 'package:elbe/elbe.dart';
-import 'package:disko/model/m_filenode.dart';
 
 class ViewOptions {
   final FileNode? selected;
@@ -15,7 +15,7 @@ class ViewOptions {
       {this.selected,
       this.showFiles = true,
       this.showNames = true,
-      this.color = Colors.blue,
+      this.color = const Color.fromARGB(255, 46, 117, 240),
       this.itemHeight = 30});
 
   ViewOptions copyWith(
