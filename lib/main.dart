@@ -23,7 +23,7 @@ void main() async {
     app: "3b72569ec046bd54",
     appVersion: AppInfoService.i.version,
     buildNumber: int.tryParse(AppInfoService.i.buildNr),
-    storeManaged: true,
+    storeManaged: false,
   ).init();
 
   moewe.events.appOpen();

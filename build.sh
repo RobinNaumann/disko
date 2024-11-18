@@ -18,10 +18,8 @@ mkdir ./dist
 echo "\x1b[34;1mbuilding app for macOS\x1b[0m"
 
 #./scripts/build_android.sh $label 
-#./scripts/build_macos.sh $label
+./scripts/build_macos.sh $label
+#./scripts/build_macos_appstore.sh
 
-echo "\x1b[34;1mbuilding app for XCode Release\x1b[0m"
-flutter build macos --release
-
-#echo "\x1b[32;1mDone! opening dist directory\x1b[0m"
-#open ./dist
+echo "\x1b[32;1mDone! opening dist directory\x1b[0m"
+open ./dist

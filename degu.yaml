@@ -26,8 +26,8 @@ releases:
     downloads:
       - platform: macOS
         url: https://github.com/RobinNaumann/disko/releases/latest/download/Disko.app.zip
-      - platform: macOS-AppStore
-        url: https://github.com/RobinNaumann/disko/releases/latest/download/Disko.app.zip
+      #- platform: macOS-AppStore
+      #  url: https://github.com/RobinNaumann/disko/releases/latest/download/Disko.app.zip
   - version: 0.3.2
     notes: improved the theming inside the app
     date: 2023-12-20
