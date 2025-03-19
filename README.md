@@ -21,4 +21,4 @@ _<img src="./assets/screenshots/sc3.png" width="300" />_
 Have a great day,<br>
 Yours, Robin
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/robinnaumann)
+[!["donate"](https://robbb.in/donate/widgets/btn_long_git.png)](https://robbb.in/donate)
